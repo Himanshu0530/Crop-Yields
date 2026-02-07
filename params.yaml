@@ -1,0 +1,16 @@
+base:
+  project: crop-yield-prediction
+  random_state: 42
+
+data:
+  source_url: https://raw.githubusercontent.com/AbhishekKandoi/Crop-Yield-Prediction-based-on-Indian-Agriculture/main/Crop%20Prediction%20dataset.csv
+  raw_path: data/raw/crop_yield.csv
+  processed_path: data/processed/crop_yield_processed.csv
+  final_path: data/features/final_data.csv
+  test_size: 0.2
+
+model:
+  name: random_forest
+  n_estimators: 100
+  max_depth: 10
+  target: Yield

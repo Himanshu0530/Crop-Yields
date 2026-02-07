@@ -1,0 +1,102 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: python src/ingest_data.py
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: 7a44b07d7dc36f895ec4539ec13ec615
+      size: 467
+    - path: src/ingest_data.py
+      hash: md5
+      md5: e8623ba219f87161fd5e82f2f842a733
+      size: 617
+    outs:
+    - path: data/raw/crop_yield.csv
+      hash: md5
+      md5: df05cf1cd0a72dc4f83049d6dd0b2c91
+      size: 3371001
+  preprocess:
+    cmd: python src/preprocess_data.py
+    deps:
+    - path: data/raw/crop_yield.csv
+      hash: md5
+      md5: df05cf1cd0a72dc4f83049d6dd0b2c91
+      size: 3371001
+    - path: params.yaml
+      hash: md5
+      md5: 7a44b07d7dc36f895ec4539ec13ec615
+      size: 467
+    - path: src/preprocess_data.py
+      hash: md5
+      md5: 9dfacf953cc351984153956ce00d1955
+      size: 1346
+    outs:
+    - path: data/processed/crop_yield_processed.csv
+      hash: md5
+      md5: 6bda2d6191c5017d6eebc07aca4f3704
+      size: 3865517
+  feature_engineering:
+    cmd: python src/feature_engineering.py
+    deps:
+    - path: data/processed/crop_yield_processed.csv
+      hash: md5
+      md5: 6bda2d6191c5017d6eebc07aca4f3704
+      size: 3865517
+    - path: params.yaml
+      hash: md5
+      md5: 7a44b07d7dc36f895ec4539ec13ec615
+      size: 467
+    - path: src/feature_engineering.py
+      hash: md5
+      md5: e33789551c82c5091614fd6fdc3be2ff
+      size: 1163
+    outs:
+    - path: data/features/final_data.csv
+      hash: md5
+      md5: c786077c685224d7c1293d47056ee9a1
+      size: 2367740
+  train:
+    cmd: python src/train_model.py
+    deps:
+    - path: data/features/final_data.csv
+      hash: md5
+      md5: c786077c685224d7c1293d47056ee9a1
+      size: 2367740
+    - path: params.yaml
+      hash: md5
+      md5: 7a44b07d7dc36f895ec4539ec13ec615
+      size: 467
+    - path: src/train_model.py
+      hash: md5
+      md5: cbcdec022ad815d1baafdd0270a4c925
+      size: 2033
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 01eba1d7c185ccd9bfdba80715df2124
+      size: 10866977
+  evaluate:
+    cmd: python src/evaluate_model.py
+    deps:
+    - path: data/features/final_data.csv
+      hash: md5
+      md5: c786077c685224d7c1293d47056ee9a1
+      size: 2367740
+    - path: models/model.pkl
+      hash: md5
+      md5: 01eba1d7c185ccd9bfdba80715df2124
+      size: 10866977
+    - path: params.yaml
+      hash: md5
+      md5: 7a44b07d7dc36f895ec4539ec13ec615
+      size: 467
+    - path: src/evaluate_model.py
+      hash: md5
+      md5: 124c7b094e548205acf838e25fc608d9
+      size: 1387
+    outs:
+    - path: scores.json
+      hash: md5
+      md5: 44d188f5571e90329051b6c1efe97f54
+      size: 66
